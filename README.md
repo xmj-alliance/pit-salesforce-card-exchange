@@ -6,6 +6,8 @@ This pit is for unit test designs mainly with Apex Mockery library
 
 Install [Apex Mockery][apexMockeryLink] in your org.
 
+Assign "Card_Exchange" Permission set to your users.
+
 ## Use case
 
 This is an imaginary exchange cards trading platform.
