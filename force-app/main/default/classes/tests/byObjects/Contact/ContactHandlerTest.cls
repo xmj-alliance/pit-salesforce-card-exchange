@@ -24,21 +24,27 @@ public with sharing class ContactHandlerTest {
     contactCountingResult.ContactsCount = contactsCount;
 
     // Configure mock SOQL results
-    MockAccountSelector accountSelectorInstance = new MockAccountSelector();
-    accountSelectorInstance.assign('selectByID', accounts);
+    Mock accountSelectorMock = Mock.forType(IAccountSelector.class);
+    MethodSpy selectByIDSpy = accountSelectorMock.spyOn('selectByID');
+    selectByIDSpy.returns(accounts);
 
-    MockContactSelector contactSelectorInstance = new MockContactSelector();
-    contactSelectorInstance.assignContactCountings(
+    Mock contactSelectorMock = Mock.forType(IContactSelector.class);
+    MethodSpy getContactCountingsSpy = contactSelectorMock.spyOn(
+      'getContactCountings'
+    );
+    getContactCountingsSpy.returns(
       new List<ContactCountingWrapper>{ contactCountingResult }
     );
 
-    MockDBModifier dbModifierInstance = new MockDBModifier();
+    // Configure DML
+    Mock dbModifierMock = Mock.forType(IDBModifier.class);
+    MethodSpy doUpdateSpy = dbModifierMock.spyOn('doUpdate');
 
     // Prepare the dependency map
     Map<String, Object> dependencyMap = new Map<String, Object>{
-      'IAccountSelector' => accountSelectorInstance,
-      'IContactSelector' => contactSelectorInstance,
-      'IDBModifier' => dbModifierInstance
+      'IAccountSelector' => accountSelectorMock.stub,
+      'IContactSelector' => contactSelectorMock.stub,
+      'IDBModifier' => dbModifierMock.stub
     };
 
     // Act
@@ -48,7 +54,10 @@ public with sharing class ContactHandlerTest {
     Test.stopTest();
 
     // Verify
-    Account updatedAccount = (Account) dbModifierInstance.updatedRecords[0];
+    List<Account> updatedAccounts = (List<Account>) MockUtils.getModifiedMockData(
+      doUpdateSpy
+    );
+    Account updatedAccount = updatedAccounts[0];
 
     Assert.isNotNull(updatedAccount.Description);
 
@@ -114,19 +123,33 @@ public with sharing class ContactHandlerTest {
     }
 
     // Configure mock SOQL results
-    MockAccountSelector accountSelectorInstance = new MockAccountSelector();
-    accountSelectorInstance.assign('selectByID', accounts);
+    Mock accountSelectorMock = Mock.forType(IAccountSelector.class);
+    MethodSpy selectByIDSpy = accountSelectorMock.spyOn('selectByID');
+    selectByIDSpy.returns(accounts);
 
-    MockContactSelector contactSelectorInstance = new MockContactSelector();
-    contactSelectorInstance.assignContactCountings(contactCountingResults);
+    Mock contactSelectorMock = Mock.forType(IContactSelector.class);
+    MethodSpy getContactCountingsSpy = contactSelectorMock.spyOn(
+      'getContactCountings'
+    );
+    getContactCountingsSpy.returns(contactCountingResults);
 
-    MockDBModifier dbModifierInstance = new MockDBModifier();
+    // Configure DML
+    Mock dbModifierMock = Mock.forType(IDBModifier.class);
+    MethodSpy doUpdateSpy = dbModifierMock.spyOn('doUpdate');
+
+    // MockAccountSelector accountSelectorInstance = new MockAccountSelector();
+    // accountSelectorInstance.assign('selectByID', accounts);
+
+    // MockContactSelector contactSelectorInstance = new MockContactSelector();
+    // contactSelectorInstance.assignContactCountings(contactCountingResults);
+
+    // MockDBModifier dbModifierInstance = new MockDBModifier();
 
     // Prepare the dependency map
     Map<String, Object> dependencyMap = new Map<String, Object>{
-      'IAccountSelector' => accountSelectorInstance,
-      'IContactSelector' => contactSelectorInstance,
-      'IDBModifier' => dbModifierInstance
+      'IAccountSelector' => accountSelectorMock.stub,
+      'IContactSelector' => contactSelectorMock.stub,
+      'IDBModifier' => dbModifierMock.stub
     };
 
     // Act
@@ -136,9 +159,16 @@ public with sharing class ContactHandlerTest {
     Test.stopTest();
 
     // Verify
-    Account updatedAccount = (Account) dbModifierInstance.updatedRecords[
-      accountsCount - 1
-    ];
+    // Account updatedAccount = (Account) dbModifierInstance.updatedRecords[
+    //   accountsCount - 1
+    // ];
+
+    // Assert.isNotNull(updatedAccount.Description);
+
+    List<Account> updatedAccounts = (List<Account>) MockUtils.getModifiedMockData(
+      doUpdateSpy
+    );
+    Account updatedAccount = updatedAccounts[accountsCount - 1];
 
     Assert.isNotNull(updatedAccount.Description);
   }

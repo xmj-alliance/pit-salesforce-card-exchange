@@ -1,5 +1,30 @@
 # pit-salesforce-card-exchange
-Apex Mockery and unit test designs
+
+This pit is for unit test designs mainly with Apex Mockery library
+
+## Prerequisites
+
+Install [Apex Mockery][apexMockeryLink] in your org.
+
+## Use case
+
+This is an imaginary exchange cards trading platform.
+
+An Account is the customer intending to sell cards.
+
+A Product is the definition of a trading card
+
+The custom object TradingProduct is the enlisted trading cards in the market.
+
+## Scenarios
+
+### As a customer, I want to know how may trading cards I have enlisted
+
+(TradingProduct Trigger handler)
+
+### As an Admin, I can see the customer ranking from App home page
+
+(Account controller)
 
 ## SF CLI Readme
 
@@ -21,3 +46,7 @@ The `sfdx-project.json` file contains useful configuration information for your 
 - [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
 - [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
 - [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+
+<!-- Refs -->
+
+[apexMockeryLink]: https://github.com/salesforce/apex-mockery
