@@ -7,7 +7,10 @@ trigger Account on Account(after insert, after update) {
       handler.afterUpdate();
     }
     when else {
-      system.debug('not implemented');
+      throw new PCEException(
+        'Trigger operationType not implemented: ' +
+        String.valueOf(Trigger.operationType)
+      );
     }
   }
 }
