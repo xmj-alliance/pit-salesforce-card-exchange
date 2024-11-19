@@ -1,0 +1,14 @@
+<template>
+  <lightning-layout class="rankingSection">
+    <lightning-layout-item>
+      <lightning-datatable
+        key-field="id"
+        hide-checkbox-column
+        show-row-number-column
+        columns={columns}
+        data={displayingAccounts}
+      >
+      </lightning-datatable>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>
